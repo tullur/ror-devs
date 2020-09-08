@@ -61,3 +61,5 @@ gem 'friendly_id', '~> 5.3'
 gem 'name_of_person', '~> 1.1', '>= 1.1.1'
 # Simple, efficient background processing for Ruby
 gem 'sidekiq', '~> 6.1', '>= 6.1.1'
+# Provides the generator settings required for Rails 3+ to use Slim
+gem 'slim-rails', '~> 3.2'

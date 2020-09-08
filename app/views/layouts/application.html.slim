@@ -1,0 +1,8 @@
+doctype html
+html.antialiased
+  = render "shared/head"
+  body.font-sans.font-normal.leading-normal.text-gray-800.bg-white
+    = render "shared/flash_notice"
+    = render "shared/header"
+    main.px-4.lg:px-10
+      = content_for?(:content) ? yield(:content) : yield
