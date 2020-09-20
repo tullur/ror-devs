@@ -1,9 +1,9 @@
 class SimpleDiscussion::ApplicationController < ::ApplicationController
-  layout "simple_discussion"
+  layout 'simple_discussion'
 
   def page_number
     page = params.fetch(:page, '').gsub(/[^0-9]/, '').to_i
-    page = "1" if page.zero?
+    page = '1' if page.zero?
     page
   end
 
@@ -18,15 +18,11 @@ class SimpleDiscussion::ApplicationController < ::ApplicationController
   helper_method :is_moderator?
 
   def require_mod_or_author_for_post!
-    unless is_moderator_or_owner?(@forum_post)
-      redirect_to_root
-    end
+    redirect_to_root unless is_moderator_or_owner?(@forum_post)
   end
 
   def require_mod_or_author_for_thread!
-    unless is_moderator_or_owner?(@forum_thread)
-      redirect_to_root
-    end
+    redirect_to_root unless is_moderator_or_owner?(@forum_thread)
   end
 
   private

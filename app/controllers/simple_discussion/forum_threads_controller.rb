@@ -1,7 +1,7 @@
 class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationController
-  before_action :authenticate_user!, only: [:mine, :participating, :new, :create]
-  before_action :set_forum_thread, only: [:show, :edit, :update]
-  before_action :require_mod_or_author_for_thread!, only: [:edit, :update]
+  before_action :authenticate_user!, only: %i[mine participating new create]
+  before_action :set_forum_thread, only: %i[show edit update]
+  before_action :require_mod_or_author_for_thread!, only: %i[edit update]
 
   def index
     @forum_threads = ForumThread.pinned_first.sorted.includes(:user, :forum_category).paginate(page: page_number)
@@ -39,7 +39,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
 
   def create
     @forum_thread = current_user.forum_threads.new(forum_thread_params)
-    @forum_thread.forum_posts.each{ |post| post.user_id = current_user.id }
+    @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
 
     if @forum_thread.save
       SimpleDiscussion::ForumThreadNotificationJob.perform_later(@forum_thread)
@@ -49,8 +49,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @forum_thread.update(forum_thread_params)
@@ -62,11 +61,11 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
 
   private
 
-    def set_forum_thread
-      @forum_thread = ForumThread.friendly.find(params[:id])
-    end
+  def set_forum_thread
+    @forum_thread = ForumThread.friendly.find(params[:id])
+  end
 
-    def forum_thread_params
-      params.require(:forum_thread).permit(:title, :forum_category_id, forum_posts_attributes: [:body])
-    end
+  def forum_thread_params
+    params.require(:forum_thread).permit(:title, :forum_category_id, forum_posts_attributes: [:body])
+  end
 end

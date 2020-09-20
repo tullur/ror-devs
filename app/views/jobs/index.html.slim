@@ -1,0 +1,41 @@
+h1 Listing jobs
+
+table
+  thead
+    tr
+      th Title
+      th Link to apply
+      th Description
+      th Company name
+      th Company website
+      th Company description
+      th Role type
+      th Compensation range
+      th Remote
+      th Years of experience
+      th User
+      th
+      th
+      th
+
+  tbody
+    - @jobs.each do |job|
+      tr
+        td = job.title
+        td = job.link_to_apply
+        td = job.description
+        td = job.company_name
+        td = job.company_website
+        td = job.company_description
+        td = job.role_type
+        td = job.compensation_range
+        td = job.remote
+        td = job.years_of_experience
+        td = job.user
+        td = link_to 'Show', job
+        td = link_to 'Edit', edit_job_path(job)
+        td = link_to 'Destroy', job, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Job', new_job_path

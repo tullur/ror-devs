@@ -1,0 +1,39 @@
+p#notice = notice
+
+p
+  strong Title:
+  = @job.title
+p
+  strong Link to apply:
+  = @job.link_to_apply
+p
+  strong Description:
+  = @job.description
+p
+  strong Company name:
+  = @job.company_name
+p
+  strong Company website:
+  = @job.company_website
+p
+  strong Company description:
+  = @job.company_description
+p
+  strong Role type:
+  = @job.role_type
+p
+  strong Compensation range:
+  = @job.compensation_range
+p
+  strong Remote:
+  = @job.remote
+p
+  strong Years of experience:
+  = @job.years_of_experience
+p
+  strong User:
+  = @job.user
+
+=> link_to 'Edit', edit_job_path(@job)
+'|
+=< link_to 'Back', jobs_path
