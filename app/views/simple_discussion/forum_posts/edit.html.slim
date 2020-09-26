@@ -1,0 +1,24 @@
+p
+  small
+    = link_to "← Back to the thread", simple_discussion.forum_thread_path(@forum_thread)
+h2
+  = content_tag :span, "Pinned", class: "text-muted" if @forum_thread.pinned?
+  = @forum_thread.title
+p.thread-details
+  strong
+    = category_link(@forum_thread.forum_category)
+  |  • 
+  = t('asked_time_ago', time: time_ago_in_words(@forum_thread.created_at), author: @forum_thread.user.name)
+br
+= content_tag :div, id: dom_id(@forum_post), class: forum_post_classes(@forum_post) do
+  .card-header
+    div
+      = avatar_tag(@forum_post.user.email)
+      strong.forum-post-user
+        = @forum_post.user.name
+      small
+        = t('commented_on')
+        = link_to @forum_post.created_at.strftime("%b %d, %Y"), simple_discussion.forum_thread_url(@forum_thread, anchor: "forum_post_#{@forum_post.id}")
+        | : 
+  .card-body
+    = render "form"

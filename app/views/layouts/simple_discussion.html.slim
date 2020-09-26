@@ -1,0 +1,65 @@
+.row.col-md-12
+  h1
+    = t('community')
+.row.simple_discussion
+  .col-md-3.mb-3
+    .card.card-body
+      = link_to t('ask_a_question'), simple_discussion.new_forum_thread_path, class: "btn btn-outline-primary btn-block"
+      hr
+      .forum-thread-filters
+        h5
+          strong
+            = t('filters')
+        div
+          = forum_link_to simple_discussion.forum_threads_path, exact: true do
+            = icon "fa-fw fas", "bars"
+            = t('.all_threads')
+        - if user_signed_in?
+          div
+            = forum_link_to simple_discussion.mine_forum_threads_path do
+              = icon "fa-fw far", "user-circle"
+              = t('.my_questions')
+          div
+            = forum_link_to simple_discussion.participating_forum_threads_path do
+              = icon "fa-fw far", "comments"
+              = t('.participating')
+        div
+          = forum_link_to simple_discussion.answered_forum_threads_path do
+            = icon "fa-fw fas", "check"
+            = t('.answered')
+        div
+          = forum_link_to simple_discussion.unanswered_forum_threads_path do
+            = icon "fa-fw fas", "question"
+            = t('.unanswered')
+      hr
+      .forum-thread-filters
+        h6
+          strong
+            = t('.by_category')
+        div
+          = forum_link_to simple_discussion.forum_threads_path, exact: true do
+            = icon "fa-fw fas", "circle"
+            |  All
+        - ForumCategory.sorted.each do |category|
+          div
+            = forum_link_to simple_discussion.forum_category_forum_threads_path(category) do
+              = icon "fa-fw fas", "circle", style: "color: #{category.color}"
+              = category.name
+      - if @forum_thread.present? && @forum_thread.persisted?
+        hr
+        - # User has not posted in the thread or subscribed
+        h5
+          = t('.notifications')
+        = link_to simple_discussion.forum_thread_notifications_path(@forum_thread), method: :post, class: "btn btn-secondary btn-sm btn-block mb-2" do
+          - if @forum_thread.subscribed? current_user
+            = icon "fa-fw fas", "bell-slash"
+            = t('.unsubscribe')
+          - else
+            = icon "fa-fw fas", "bell"
+            = t('.suscribe')
+        small
+          = @forum_thread.subscribed_reason(current_user)
+  .col-md-9.mb-3
+    .card.card-body
+      = yield
+- parent_layout("application")
