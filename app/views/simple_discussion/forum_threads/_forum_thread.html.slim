@@ -1,0 +1,26 @@
+= cache forum_thread do
+  .forum-thread
+    .row
+      .col-sm-1.text-center
+        = avatar_tag(forum_thread.user.email)
+      .col
+        h4
+          - if forum_thread.solved?
+            span.text-success
+              = icon "fas", "check-circle"
+          = link_to simple_discussion.forum_thread_path(forum_thread) do
+            = icon "fas", "thumb-tack", class: "text-muted" if forum_thread.pinned?
+            = forum_thread.title
+        .thread-details
+          strong
+            = category_link(forum_thread.forum_category)
+          |  • 
+          = t('asked_time_ago', time: time_ago_in_words(forum_thread.created_at), author: forum_thread.user.name)
+        p.text-muted
+          = truncate(forum_thread.forum_posts.first.body, length: 200)
+      .col-sm-2.text-center
+        = link_to simple_discussion.forum_thread_path(forum_thread), class: "thread-posts-count" do
+          span.count
+            = forum_thread.forum_posts_count
+          small
+            = t("post", count: forum_thread.forum_posts_count)

@@ -1,0 +1,18 @@
+.row
+  .col-md-11
+    h1
+      = icon "fas", "thumb-tack", class: "text-muted" if @forum_thread.pinned?
+      = @forum_thread.title
+  - if is_moderator_or_owner?(@forum_thread)
+    .col-md-1
+      = link_to icon("fas","pencil"), simple_discussion.edit_forum_thread_path(@forum_thread),
+      -         class: "text-muted",
+      -         data: { toggle: "tooltip", placement: "left" },
+      -         title: t('edit_this_thread')
+p.thread-details
+  strong
+    = category_link(@forum_thread.forum_category)
+  |  • 
+  = t('asked_time_ago', time: time_ago_in_words(@forum_thread.created_at), author: @forum_thread.user.name)
+= render partial: "simple_discussion/forum_posts/forum_post", collection: @forum_thread.forum_posts.includes(:user).sorted
+= render partial: "simple_discussion/forum_posts/form" if user_signed_in?
